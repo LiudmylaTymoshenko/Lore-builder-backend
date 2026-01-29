@@ -3,6 +3,12 @@
 /node_modules
 /build
 
+node_modules/.prisma
+node_modules/@prisma/client
+
+# Prisma generated output
+generated/
+
 # Logs
 logs
 *.log
