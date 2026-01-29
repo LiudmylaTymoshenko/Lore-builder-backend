@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//////////////////////////////////////////////////////
+// USER & AUTH
+//////////////////////////////////////////////////////
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  lores     Lore[]
+}
+
+//////////////////////////////////////////////////////
+// LORE (UNIVERSE)
+//////////////////////////////////////////////////////
+
+model Lore {
+  id          String   @id @default(uuid())
+  name        String
+  type        String
+  description String
+  imageUrl    String?
+
+  createdAt   DateTime @default(now())
+
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
+
+  sources     Source[]
+  nodes       Node[]
+  edges       Edge[]
+}
+
+//////////////////////////////////////////////////////
+// SOURCE (BOOK / FILM / CODEX)
+//////////////////////////////////////////////////////
+
+model Source {
+  id        String   @id @default(uuid())
+  title     String
+  type      String
+  canon     String   @default("official")
+
+  createdAt DateTime @default(now())
+
+  loreId    String
+  lore      Lore     @relation(fields: [loreId], references: [id])
+
+  nodes     Node[]
+}
+
+//////////////////////////////////////////////////////
+// NODE (EVENT / CHARACTER / PLACE)
+//////////////////////////////////////////////////////
+
+model Node {
+  id          String   @id @default(uuid())
+  type        NodeType
+  title       String
+  summary     String?
+  metadata    Json?
+
+  createdAt   DateTime @default(now())
+
+  loreId      String
+  lore        Lore     @relation(fields: [loreId], references: [id])
+
+  sourceId    String?
+  source      Source? @relation(fields: [sourceId], references: [id])
+
+  outgoing    Edge[]  @relation("OutgoingEdges")
+  incoming    Edge[]  @relation("IncomingEdges")
+}
+
+enum NodeType {
+  EVENT
+  CHARACTER
+  PLACE
+}
+
+//////////////////////////////////////////////////////
+// EDGE (RELATIONSHIP)
+//////////////////////////////////////////////////////
+
+model Edge {
+  id        String   @id @default(uuid())
+  type      String
+  confidence String @default("fact")
+
+  loreId    String
+  lore      Lore    @relation(fields: [loreId], references: [id])
+
+  fromId    String
+  from      Node    @relation("OutgoingEdges", fields: [fromId], references: [id])
+
+  toId      String
+  to        Node    @relation("IncomingEdges", fields: [toId], references: [id])
+
+  contextEventId String?
+}
