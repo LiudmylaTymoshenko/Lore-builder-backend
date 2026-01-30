@@ -33,7 +33,7 @@ export class AuthService {
       },
     });
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(user);
   }
 
   async login(dto: LoginDto) {
@@ -51,16 +51,24 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.signToken(user.id, user.email);
+    return this.signToken(user);
   }
 
-  private async signToken(userId: string, email: string) {
-    const payload = { sub: userId, email };
+  private async signToken(user: {
+    id: string;
+    email: string;
+    password: string;
+  }) {
+    const payload = { sub: user.id, email: user.email };
 
     const token = await this.jwtService.signAsync(payload);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userWithoutPassword } = user;
+
     return {
       accessToken: token,
+      user: userWithoutPassword,
     };
   }
 }
