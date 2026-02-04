@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '../generated/client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import pg from 'pg';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -11,9 +12,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       throw new Error('DATABASE_URL is not defined');
     }
 
-    const adapter = new PrismaPg({
+    const pool = new pg.Pool({
       connectionString,
     });
+
+    const adapter = new PrismaPg(pool);
 
     super({ adapter });
   }
