@@ -12,9 +12,9 @@ import {
 import { LoreService } from './lore.service';
 import { CreateLoreDto } from './dto/create-lore.dto';
 import { UpdateLoreDto } from './dto/update-lore.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
-import { JwtUser } from 'src/auth/types/jwt-user.type';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { JwtUser } from '../auth/types/jwt-user.type';
 
 @Controller('lores')
 @UseGuards(JwtAuthGuard)
