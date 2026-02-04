@@ -40,11 +40,16 @@ model Lore {
   createdAt   DateTime @default(now())
 
   ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id])
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   sources     Source[]
-  nodes       Node[]
-  edges       Edge[]
+
+  // Flow state stored as JSON (matches your frontend data structure)
+  events      Json?    @default("[]")
+  characters  Json?    @default("[]")
+  connections Json?    @default("[]")
+  nodes       Json?    @default("[]")
+  edges       Json?    @default("[]")
 }
 
 //////////////////////////////////////////////////////
@@ -60,57 +65,7 @@ model Source {
   createdAt DateTime @default(now())
 
   loreId    String
-  lore      Lore     @relation(fields: [loreId], references: [id])
+  lore      Lore     @relation(fields: [loreId], references: [id], onDelete: Cascade)
 
-  nodes     Node[]
-}
-
-//////////////////////////////////////////////////////
-// NODE (EVENT / CHARACTER / PLACE)
-//////////////////////////////////////////////////////
-
-model Node {
-  id          String   @id @default(uuid())
-  type        NodeType
-  title       String
-  summary     String?
-  metadata    Json?
-
-  createdAt   DateTime @default(now())
-
-  loreId      String
-  lore        Lore     @relation(fields: [loreId], references: [id])
-
-  sourceId    String?
-  source      Source? @relation(fields: [sourceId], references: [id])
-
-  outgoing    Edge[]  @relation("OutgoingEdges")
-  incoming    Edge[]  @relation("IncomingEdges")
-}
-
-enum NodeType {
-  EVENT
-  CHARACTER
-  PLACE
-}
-
-//////////////////////////////////////////////////////
-// EDGE (RELATIONSHIP)
-//////////////////////////////////////////////////////
-
-model Edge {
-  id        String   @id @default(uuid())
-  type      String
-  confidence String @default("fact")
-
-  loreId    String
-  lore      Lore    @relation(fields: [loreId], references: [id])
-
-  fromId    String
-  from      Node    @relation("OutgoingEdges", fields: [fromId], references: [id])
-
-  toId      String
-  to        Node    @relation("IncomingEdges", fields: [toId], references: [id])
-
-  contextEventId String?
+  @@index([loreId])
 }
