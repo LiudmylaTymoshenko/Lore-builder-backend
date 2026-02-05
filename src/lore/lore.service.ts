@@ -92,7 +92,16 @@ export class LoreService {
         type: dto.type,
         description: dto.description ?? 'Imported from JSON',
         ownerId,
-
+        imageUrl: dto.imageUrl ?? '',
+        nodes: dto.nodes ?? [],
+        edges: dto.edges ?? [],
+        sources: {
+          create: dto.sources.map((s) => ({
+            title: s.title,
+            type: s.type,
+            canon: s.canon ?? 'official',
+          })),
+        },
         events: dto.events ?? [],
         characters: dto.characters ?? [],
         connections: dto.connections ?? [],

@@ -1,5 +1,6 @@
-// dto/import-lore.dto.ts
-import { IsString, IsOptional, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
+import { SourceDto } from './create-lore.dto';
 
 export class ImportLoreDto {
   @IsString()
@@ -31,4 +32,9 @@ export class ImportLoreDto {
 
   @IsOptional()
   edges?: any[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SourceDto)
+  sources: SourceDto[];
 }
