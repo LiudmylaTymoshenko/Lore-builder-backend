@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateLoreDto } from './dto/create-lore.dto';
 import { UpdateLoreDto } from './dto/update-lore.dto';
+import { ImportLoreDto } from './dto/import-lore.dto';
 
 @Injectable()
 export class LoreService {
@@ -82,5 +83,20 @@ export class LoreService {
     }
 
     return { success: true };
+  }
+
+  async importLore(ownerId: string, dto: ImportLoreDto) {
+    return this.prisma.lore.create({
+      data: {
+        name: dto.name,
+        type: dto.type,
+        description: dto.description ?? 'Imported from JSON',
+        ownerId,
+
+        events: dto.events ?? [],
+        characters: dto.characters ?? [],
+        connections: dto.connections ?? [],
+      },
+    });
   }
 }

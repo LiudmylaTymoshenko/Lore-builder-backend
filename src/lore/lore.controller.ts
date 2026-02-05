@@ -15,11 +15,17 @@ import { UpdateLoreDto } from './dto/update-lore.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtUser } from '../auth/types/jwt-user.type';
+import { ImportLoreDto } from './dto/import-lore.dto';
 
 @Controller('lores')
 @UseGuards(JwtAuthGuard)
 export class LoreController {
   constructor(private readonly loreService: LoreService) {}
+
+  @Post('import')
+  importLore(@CurrentUser() user: JwtUser, @Body() dto: ImportLoreDto) {
+    return this.loreService.importLore(user.id, dto);
+  }
 
   @Post()
   create(@CurrentUser() user: JwtUser, @Body() dto: CreateLoreDto) {
