@@ -36,6 +36,7 @@ model Lore {
   type        String
   description String
   imageUrl    String?
+  tag         String?
 
   createdAt   DateTime @default(now())
 

@@ -22,6 +22,9 @@ export class CreateLoreDto {
   @IsString()
   description: string;
 
+  @IsString()
+  tag: string;
+
   @IsArray()
   @ValidateNested({ each: true })
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call

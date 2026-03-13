@@ -15,6 +15,9 @@ export class ImportLoreDto {
   @IsString()
   description: string;
 
+  @IsString()
+  tag: string;
+
   @IsOptional()
   @IsArray()
   events?: any[];

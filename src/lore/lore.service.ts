@@ -91,6 +91,7 @@ export class LoreService {
         name: dto.name,
         type: dto.type,
         description: dto.description ?? 'Imported from JSON',
+        tag: dto.tag,
         ownerId,
         imageUrl: dto.imageUrl ?? '',
         nodes: dto.nodes ?? [],
