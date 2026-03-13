@@ -32,4 +32,8 @@ export class UpdateLoreDto {
   @IsOptional()
   @IsArray()
   nodes?: any[];
+
+  @IsOptional()
+  @IsArray()
+  places?: any[];
 }

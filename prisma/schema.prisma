@@ -50,6 +50,7 @@ model Lore {
   connections Json?    @default("[]")
   nodes       Json?    @default("[]")
   edges       Json?    @default("[]")
+  places      Json?    @default("[]")
 }
 
 //////////////////////////////////////////////////////
