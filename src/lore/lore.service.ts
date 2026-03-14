@@ -26,13 +26,6 @@ export class LoreService {
     return this.prisma.lore.findMany({
       where: { ownerId },
       orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        imageUrl: true,
-        createdAt: true,
-      },
     });
   }
 
