@@ -13,9 +13,6 @@ export class UpdateLoreDto {
   @IsString()
   description?: string;
 
-  @IsString()
-  tag: string;
-
   @IsOptional()
   @IsString()
   imageUrl?: string;
