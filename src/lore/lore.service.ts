@@ -22,7 +22,6 @@ export class LoreService {
       },
     });
   }
-
   findAll(ownerId: string) {
     return this.prisma.lore.findMany({
       where: { ownerId },
@@ -35,6 +34,10 @@ export class LoreService {
         createdAt: true,
         tag: true,
         sources: true,
+        characters: true,
+        places: true,
+        events: true,
+        nodes: true,
       },
     });
   }
