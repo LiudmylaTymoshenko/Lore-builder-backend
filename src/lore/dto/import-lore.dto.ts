@@ -40,4 +40,7 @@ export class ImportLoreDto {
   @ValidateNested({ each: true })
   @Type(() => SourceDto)
   sources: SourceDto[];
+
+  @IsOptional()
+  places?: any[];
 }

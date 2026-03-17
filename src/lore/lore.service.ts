@@ -110,6 +110,7 @@ export class LoreService {
         events: dto.events ?? [],
         characters: dto.characters ?? [],
         connections: dto.connections ?? [],
+        places: dto.places ?? [],
       },
     });
   }
